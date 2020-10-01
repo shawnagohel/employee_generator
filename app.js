@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
-const Manager = require('./lib/Manager.js')
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
+const Manager = require('./lib/manager.js')
+const Engineer = require('./lib/engineer.js');
+const Intern = require('./lib/intern.js');
 const generatePage = require('./src/generatePage');
 const engList = [];
 const internList = [];
@@ -12,7 +12,7 @@ let manager;
 const getEngineerInfo = () => {
     return inquirer.prompt([{
           name: 'engName',
-          message: 'What is the employee\'s name?(required)',
+          message: 'Please enter the employee\'s name?(required)',
           validate: function validTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid name";
@@ -23,12 +23,12 @@ const getEngineerInfo = () => {
     {
           type: 'number',
           name: 'engId',
-          message: 'What\'s the engineer\'s employee id?(required)',
+          message: 'Please enter the engineer\'s employee id?(required)',
           default: 0
     },
     {
           name: 'engEmail',
-          message: 'What is the engineer\'s email id?(required)',
+          message: 'Please enter the engineer\'s email id?(required)',
           validate: function validEmail(text){
             if(text==="" || text===" " || !text.includes('@')){
                 return "Please give a valid email address"
@@ -38,7 +38,7 @@ const getEngineerInfo = () => {
     },
     {
           name: 'engGithub',
-          message: 'What is the engineer\'s github username?(required)',
+          message: 'Please enter the engineer\'s github username?(required)',
           validate: function validTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid github username";
