@@ -8,7 +8,7 @@ const internList = [];
 const fs = require('fs');
 let manager;
 
-//get engineer info from user
+//function to get the engineer's information
 const getEngineerInfo = () => {
     return inquirer.prompt([{
           name: 'engName',
@@ -54,7 +54,7 @@ const getEngineerInfo = () => {
 })
 }
 
-//get intern info from user
+//function to receive the intern's info
 const getInternInfo = () => {
     return inquirer.prompt([{
          name: 'internName',
@@ -101,7 +101,7 @@ const getInternInfo = () => {
 })
 }
 
-//get role - engineer, intern or done building the team
+//function to input roles or team is complete
 const confirmGetInfo = () => {
     
     return inquirer.prompt({
@@ -135,7 +135,7 @@ const confirmGetInfo = () => {
     })
 }
 
-//Get manager info
+//Function to get Manager's info
 const promptUser = () => {
     return inquirer.prompt([{
         name: 'mgrName',
@@ -178,7 +178,7 @@ const promptUser = () => {
     })
 }
 
-//calling functions
+//function to call the answers
 promptUser().then(data => {
      confirmGetInfo().then(templateData => {
       
