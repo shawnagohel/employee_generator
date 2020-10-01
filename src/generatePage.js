@@ -27,7 +27,7 @@ const generateVcardsEng = (dataEng) => {
     };
  };
  
- //generate html for intern
+ //generate html for the Intern
  const generateVcardsInt = (dataInt) => {
     if(dataInt){
        return `
