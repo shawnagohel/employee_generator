@@ -85,7 +85,7 @@ const getInternInfo = () => {
     },
     {
         name: 'internSchool',
-        message: 'What is the name of the intern\'s school?(required)',
+        message: 'Please enter the intern\'s current school?(required)',
         validate: function validTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid school name";
