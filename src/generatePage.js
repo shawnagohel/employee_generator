@@ -1,4 +1,4 @@
-//generate html for engineer
+//html for the engineer
 const generateVcardsEng = (dataEng) => {
     console.log(dataEng);
     if (dataEng){
@@ -27,7 +27,7 @@ const generateVcardsEng = (dataEng) => {
     };
  };
  
- //generate html for the Intern
+ //html for the intern
  const generateVcardsInt = (dataInt) => {
     if(dataInt){
        return `
@@ -56,7 +56,7 @@ const generateVcardsEng = (dataEng) => {
  };
  
  
- //base html and manager html
+ //basic and manager's html
  module.exports = (templateData) => {
     console.log(templateData);
     const {manager,engineer,intern} = templateData;
