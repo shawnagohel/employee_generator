@@ -3,8 +3,8 @@ const Manager = require('./lib/manager.js')
 const Engineer = require('./lib/engineer.js');
 const Intern = require('./lib/intern.js');
 const generatePage = require('./src/generatePage');
-const engList = [];
-const internList = [];
+const engProfile = [];
+const internProfile = [];
 const fs = require('fs');
 let manager;
 
@@ -48,8 +48,8 @@ const getEngineerInfo = () => {
     }
 ]).then(answers => {
     const engineer =  new Engineer(answers.engName,answers.engId,answers.engEmail,answers.engGithub);
-    engList.push(engineer);
-    console.log(engList);
+    engProfile.push(engineer);
+    console.log(engProfile);
     confirmGetInfo();
 })
 }
@@ -95,8 +95,8 @@ const getInternInfo = () => {
      }
 ]).then(answers => {
     const intern = new Intern(answers.internName,answers.internId,answers.internEmail,answers.internSchool);
-    internList.push(intern);
-    console.log(internList);
+    internProfile.push(intern);
+    console.log(internProfile);
     confirmGetInfo();
 })
 }
@@ -115,8 +115,8 @@ const confirmGetInfo = () => {
               
               const templateData = {
                   'manager' : manager,
-                  'engineer' : engList,
-                  'intern': internList
+                  'engineer' : engProfile,
+                  'intern': internProfile
               };
               let data = generatePage(templateData);
               
