@@ -13,9 +13,9 @@ const getEngineerInfo = () => {
     return inquirer.prompt([{
           name: 'engName',
           message: 'Please enter the employee\'s name?(required)',
-          validate: function validTitle(text){
+          validate: function validateTitle(text){
             if(text==="" || text===" "){
-                return "Please enter a  valid name";
+                return "Please enter a valid employee name";
             }
             return true;
        }
@@ -31,7 +31,7 @@ const getEngineerInfo = () => {
           message: 'Please enter the engineer\'s email id?(required)',
           validate: function validEmail(text){
             if(text==="" || text===" " || !text.includes('@')){
-                return "Please give a valid email address"
+                return "Please enter a valid email address"
             }
             return true;
         }
@@ -39,9 +39,9 @@ const getEngineerInfo = () => {
     {
           name: 'engGithub',
           message: 'Please enter the engineer\'s github username?(required)',
-          validate: function validTitle(text){
+          validate: function validateTitle(text){
             if(text==="" || text===" "){
-                return "Please enter a  valid github username";
+                return "Please enter a valid github username";
             }
             return true;
        }
@@ -59,7 +59,7 @@ const getInternInfo = () => {
     return inquirer.prompt([{
          name: 'internName',
          message: 'What is the intern\'s name(required)',
-         validate: function validTitle(text){
+         validate: function validateTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid name";
             }
@@ -86,7 +86,7 @@ const getInternInfo = () => {
     {
         name: 'internSchool',
         message: 'Please enter the intern\'s current school?(required)',
-        validate: function validTitle(text){
+        validate: function validateTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid school name";
             }
@@ -140,7 +140,7 @@ const promptUser = () => {
     return inquirer.prompt([{
         name: 'mgrName',
         message: 'What is the team manager\'s name?(required)',
-        validate: function validTitle(text){
+        validate: function validateTitle(text){
             if(text==="" || text===" "){
                 return "Please enter a  valid name";
             }
