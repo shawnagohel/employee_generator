@@ -142,7 +142,7 @@ const promptUser = () => {
         message: 'What is the team manager\'s name?(required)',
         validate: function validateTitle(text){
             if(text==="" || text===" "){
-                return "Please enter a  valid name";
+                return "Please enter a valid name";
             }
             return true;
        }
@@ -169,7 +169,7 @@ const promptUser = () => {
     {
         type: 'number',
         name: 'mgrOffNumber',
-        message: 'What\'s the manager\'s office number?(required)',
+        message: 'What\'s the manager\'s phone number?(required)',
         default: 0000
     }]).then(answers => {
         manager = new Manager(answers.mgrName,answers.empId,answers.email,answers.mgrOffNumber);
