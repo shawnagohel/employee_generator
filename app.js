@@ -1,26 +1,24 @@
-const inquirer = require("inquirer");
-const fs = require("fs");
 
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
+const fs = require("fs")
+const inquirer = require("inquirer")
+const path = require("path")
 
-const path = require("path");
-
-// const inquirer = require("inquirer");
-// const fs = require("fs");
-
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const Manager = require("./lib/manager")
+const Engineer = require("./lib/engineer")
+const Intern = require("./lib/intern")
 
 const render = require("./lib/htmlRenderer");
+
+
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.resolve(__dirname,"output", "team.html")
 
 var teamMembers = [];
 function buildPage(){
     fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
 }
 
-function createTeam(){
+function buildTeam(){
     
     inquirer.prompt([
         {
@@ -37,13 +35,13 @@ function createTeam(){
       ]).then(userChoice => {
         switch(userChoice.memberChoice) {
         case "Engineer":
-          addEngineer();
+          inputEngineer();
           break;
         case "Intern":
           addIntern();
           break;
           case "Manager":
-              addManager();
+              inputManager();
               break;
         default:
           buildPage();
@@ -52,7 +50,7 @@ function createTeam(){
 
 }
 
-function addManager(){
+function inputManager(){
     inquirer.prompt([{
         type: "input",
         name: "managerName",
@@ -63,12 +61,26 @@ function addManager(){
         name: "managerId",
         message: "What is your manager's id?",
     },
+
+
+// validate email 
     {
-        
-        type: "input",
-        name: "managerEmail",
-        message: "What is your manager's email?",
-    },
+      name: 'managerEmail',
+      message: 'What is the manger\'s email id?(required)',
+      validate: function validEmail(text){
+        if(text==="" || text===" " || !text.includes('@')){
+            return "Please give a valid email address"
+        }
+        return true;
+    }
+},
+
+
+
+
+
+
+
     {
         type: "input",
         name: "officeNumber",
@@ -79,12 +91,12 @@ function addManager(){
 ]).then(answers => {
     var manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
     teamMembers.push(manager);
-    createTeam();
+    buildTeam();
     
 })
 }
 
-function addEngineer() {
+function inputEngineer() {
     inquirer.prompt([
       {
         type: "input",
@@ -98,12 +110,23 @@ function addEngineer() {
         message: "What is your engineer's id?",
         
       },
-      {
-        type: "input",
-        name: "engineerEmail",
-        message: "What is your engineer's email?",
-        
-      },
+  
+
+// validate email 
+{
+  name: 'engineerEmail',
+  message: 'What is the engineer\'s email id?(required)',
+  validate: function validEmail(text){
+    if(text==="" || text===" " || !text.includes('@')){
+        return "Please give a valid email address"
+    }
+    return true;
+}
+},
+
+
+
+
       {
         type: "input",
         name: "engineerGithub",
@@ -114,7 +137,7 @@ function addEngineer() {
       const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
       teamMembers.push(engineer);
       
-      createTeam();
+      buildTeam();
     });
   }
 
@@ -132,12 +155,21 @@ function addEngineer() {
         message: "What is your intern's id?",
         
       },
-      {
-        type: "input",
-        name: "internEmail",
-        message: "What is your intern's email?",
-        
-      },
+  
+// validate email 
+{
+  name: 'internEmail',
+  message: 'What is the intern\'s email id?(required)',
+  validate: function validEmail(text){
+    if(text==="" || text===" " || !text.includes('@')){
+        return "Please give a valid email address"
+    }
+    return true;
+}
+},
+
+
+
       {
         type: "input",
         name: "internSchool",
@@ -148,11 +180,16 @@ function addEngineer() {
       const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
       teamMembers.push(intern);
       
-      createTeam();
+      buildTeam();
     });
   }
 
-  createTeam()
+  buildTeam()
+
+
+
+
+
 
   
 // Write code to use inquirer to gather information about the development team members,
