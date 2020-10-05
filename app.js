@@ -1,187 +1,179 @@
-const inquirer = require('inquirer');
-const Manager = require('./lib/manager.js')
-const Engineer = require('./lib/engineer.js');
-const Intern = require('./lib/intern.js');
-const generatePage = require('./src/generatePage');
-const engProfile = [];
-const internProfile = [];
-const fs = require('fs');
-let manager;
+const inquirer = require("inquirer");
+const fs = require("fs");
 
-//function to get the engineer's information
-const getEngineerInfo = () => {
-    return inquirer.prompt([{
-          name: 'engName',
-          message: 'Please enter the employee\'s name?(required)',
-          validate: function validateTitle(text){
-            if(text==="" || text===" "){
-                return "Please enter a valid employee name";
-            }
-            return true;
-       }
-    },
-    {
-          type: 'number',
-          name: 'engId',
-          message: 'Please enter the engineer\'s employee id?(required)',
-          default: 0
-    },
-    {
-          name: 'engEmail',
-          message: 'Please enter the engineer\'s email id?(required)',
-          validate: function validEmail(text){
-            if(text==="" || text===" " || !text.includes('@')){
-                return "Please enter a valid email address"
-            }
-            return true;
-        }
-    },
-    {
-          name: 'engGithub',
-          message: 'Please enter the engineer\'s github username?(required)',
-          validate: function validateTitle(text){
-            if(text==="" || text===" "){
-                return "Please enter a valid github username";
-            }
-            return true;
-       }
-    }
-]).then(answers => {
-    const engineer =  new Engineer(answers.engName,answers.engId,answers.engEmail,answers.engGithub);
-    engProfile.push(engineer);
-    console.log(engProfile);
-    confirmGetData();
-})
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+
+const path = require("path");
+
+// const inquirer = require("inquirer");
+// const fs = require("fs");
+
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
+
+const render = require("./lib/htmlRenderer");
+
+var teamMembers = [];
+function buildPage(){
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
 }
 
-//function to receive the intern's info
-const getInternData = () => {
-    return inquirer.prompt([{
-         name: 'internName',
-         message: 'What is the intern\'s name(required)',
-         validate: function validateTitle(text){
-            if(text==="" || text===" "){
-                return "Please enter a  valid name";
-            }
-            return true;
-       }
-    },
-    {
-        type: 'number',
-        name: 'internId',
-        message: 'What is the intern\'s id(required)',
-        default: 0
-    },
-    {
-        name: 'internEmail',
-        message: 'what is the intern\'s email id?(required)',
-        validate: function validEmail(text){
-            if(text==="" || text===" " || !text.includes('@')){
-                return "Please give a valid email address"
-            }
-            return true;
-        }
-
-    },
-    {
-        name: 'internCollege',
-        message: 'Please enter the intern\'s current college?(required)',
-        validate: function validateTitle(text){
-            if(text==="" || text===" "){
-                return "Please enter a valid college name";
-            }
-            return true;
-       }
-     }
-]).then(answers => {
-    const intern = new Intern(answers.internName,answers.internId,answers.internEmail,answers.internCollege);
-    internProfile.push(intern);
-    console.log(internProfile);
-    confirmGetData();
-})
-}
-
-//function to input roles or team is complete
-const confirmGetData = () => {
+function createTeam(){
     
-    return inquirer.prompt({
-        type: 'list',
-        name: 'empRole',
-        choices: ['Engineer','Intern','Done building team'],
-        message: 'Please select employee role or select done building the team'
-    }).then(answers => {
+    inquirer.prompt([
+        {
+          type: "list",
+          name: "memberChoice",
+          message: "Which type of team member would you like to add?",
+          choices: [
+              "Manager",
+            "Engineer",
+            "Intern",
+            "I don't want to add any more team members"
+          ]
+        }
+      ]).then(userChoice => {
+        switch(userChoice.memberChoice) {
+        case "Engineer":
+          addEngineer();
+          break;
+        case "Intern":
+          addIntern();
+          break;
+          case "Manager":
+              addManager();
+              break;
+        default:
+          buildPage();
+        }
+      });
+
+}
+
+function addManager(){
+    inquirer.prompt([{
+        type: "input",
+        name: "managerName",
+        message: "What is your manager's name?",
+    },
+    {
+        type: "input",
+        name: "managerId",
+        message: "What is your manager's id?",
+    },
+    {
         
-        if (answers.empRole === 'Done building team'){
-              
-              const templateData = {
-                  'manager' : manager,
-                  'engineer' : engProfile,
-                  'intern': internProfile
-              };
-              let data = generatePage(templateData);
-              
-              fs.writeFile('./dist/index.html',data,err => {
-                  if(err) throw err;
-              })
-        }
-        else if(answers.empRole === 'Engineer'){
-            getEngineerInfo();
-            
-        }
-        else{
-            getInternData();
-           
-        }
-    })
-}
-
-//Function to get Manager's info
-const userData = () => {
-    return inquirer.prompt([{
-        name: 'managerName',
-        message: 'What is the team manager\'s name?(required)',
-        validate: function validateTitle(text){
-            if(text==="" || text===" "){
-                return "Please enter a valid name";
-            }
-            return true;
-       }
-
+        type: "input",
+        name: "managerEmail",
+        message: "What is your manager's email?",
     },
     {
-        type: 'number',
-        name: 'employeeId',
-        message: ' What\'s the manager\'s employee id?(required)',
-        default: 0
+        type: "input",
+        name: "officeNumber",
+        message: "What is your manager's office number?",
+    }
 
-    },
-    {
-        name: 'email',
-        message: 'What\'s the manager\'s email id?(required)',
-        validate: function validEmail(text){
-            if(text==="" || text===" " || !text.includes('@')){
-                return "Please give a valid email address"
-            }
-            return true;
-        }
 
-    },
-    {
-        type: 'number',
-        name: 'managerPhone',
-        message: 'What\'s the manager\'s phone number?(required)',
-        default: 0000
-    }]).then(answers => {
-        manager = new Manager(answers.managerName,answers.employeeId,answers.email,answers.managerPhone);
-        console.log(manager);
-        return manager;
-    })
-}
-
-//function to call the answers
-userData().then(data => {
-     confirmGetData().then(templateData => {
-      
-     });
-     
+]).then(answers => {
+    var manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
+    teamMembers.push(manager);
+    createTeam();
+    
 })
+}
+
+function addEngineer() {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "engineerName",
+        message: "What is your engineer's name?",
+      
+      },
+      {
+        type: "input",
+        name: "engineerId",
+        message: "What is your engineer's id?",
+        
+      },
+      {
+        type: "input",
+        name: "engineerEmail",
+        message: "What is your engineer's email?",
+        
+      },
+      {
+        type: "input",
+        name: "engineerGithub",
+        message: "What is your engineer's GitHub username?",
+        
+      }
+    ]).then(answers => {
+      const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
+      teamMembers.push(engineer);
+      
+      createTeam();
+    });
+  }
+
+  function addIntern() {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "internName",
+        message: "What is your intern's name?",
+        
+      },
+      {
+        type: "input",
+        name: "internId",
+        message: "What is your intern's id?",
+        
+      },
+      {
+        type: "input",
+        name: "internEmail",
+        message: "What is your intern's email?",
+        
+      },
+      {
+        type: "input",
+        name: "internSchool",
+        message: "What is your intern's school?",
+        
+      }
+    ]).then(answers => {
+      const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+      teamMembers.push(intern);
+      
+      createTeam();
+    });
+  }
+
+  createTeam()
+
+  
+// Write code to use inquirer to gather information about the development team members,
+// and to create objects for each team member (using the correct classes as blueprints!)
+
+// After the user has input all employees desired, call the `render` function (required
+// above) and pass in an array containing all employee objects; the `render` function will
+// generate and return a block of HTML including templated divs for each employee!
+
+// After you have your html, you're now ready to create an HTML file using the HTML
+// returned from the `render` function. Now write it to a file named `team.html` in the
+// `output` folder. You can use the variable `outputPath` above target this location.
+// Hint: you may need to check if the `output` folder exists and create it if it
+// does not.
+
+// HINT: each employee type (manager, engineer, or intern) has slightly different
+// information; write your code to ask different questions via inquirer depending on
+// employee type.
+
+// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
+// and Intern classes should all extend from a class named Employee; see the directions
+// for further information. Be sure to test out each class and verify it generates an
+// object with the correct structure and methods. This structure will be crucial in order
+// for the provided `render` function to work! ```
