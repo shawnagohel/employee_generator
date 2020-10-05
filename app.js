@@ -50,12 +50,12 @@ const getEngineerInfo = () => {
     const engineer =  new Engineer(answers.engName,answers.engId,answers.engEmail,answers.engGithub);
     engProfile.push(engineer);
     console.log(engProfile);
-    confirmGetInfo();
+    confirmGetData();
 })
 }
 
 //function to receive the intern's info
-const getInternInfo = () => {
+const getInternData = () => {
     return inquirer.prompt([{
          name: 'internName',
          message: 'What is the intern\'s name(required)',
@@ -84,25 +84,25 @@ const getInternInfo = () => {
 
     },
     {
-        name: 'internSchool',
-        message: 'Please enter the intern\'s current school?(required)',
+        name: 'internCollege',
+        message: 'Please enter the intern\'s current college?(required)',
         validate: function validateTitle(text){
             if(text==="" || text===" "){
-                return "Please enter a  valid school name";
+                return "Please enter a valid college name";
             }
             return true;
        }
      }
 ]).then(answers => {
-    const intern = new Intern(answers.internName,answers.internId,answers.internEmail,answers.internSchool);
+    const intern = new Intern(answers.internName,answers.internId,answers.internEmail,answers.internCollege);
     internProfile.push(intern);
     console.log(internProfile);
-    confirmGetInfo();
+    confirmGetData();
 })
 }
 
 //function to input roles or team is complete
-const confirmGetInfo = () => {
+const confirmGetData = () => {
     
     return inquirer.prompt({
         type: 'list',
@@ -129,16 +129,16 @@ const confirmGetInfo = () => {
             
         }
         else{
-            getInternInfo();
+            getInternData();
            
         }
     })
 }
 
 //Function to get Manager's info
-const promptUser = () => {
+const userData = () => {
     return inquirer.prompt([{
-        name: 'mgrName',
+        name: 'managerName',
         message: 'What is the team manager\'s name?(required)',
         validate: function validateTitle(text){
             if(text==="" || text===" "){
@@ -150,7 +150,7 @@ const promptUser = () => {
     },
     {
         type: 'number',
-        name: 'empId',
+        name: 'employeeId',
         message: ' What\'s the manager\'s employee id?(required)',
         default: 0
 
@@ -168,19 +168,19 @@ const promptUser = () => {
     },
     {
         type: 'number',
-        name: 'managerphone',
+        name: 'managerPhone',
         message: 'What\'s the manager\'s phone number?(required)',
         default: 0000
     }]).then(answers => {
-        manager = new Manager(answers.mgrName,answers.empId,answers.email,answers.managerphone);
+        manager = new Manager(answers.managerName,answers.employeeId,answers.email,answers.managerPhone);
         console.log(manager);
         return manager;
     })
 }
 
 //function to call the answers
-promptUser().then(data => {
-     confirmGetInfo().then(templateData => {
+userData().then(data => {
+     confirmGetData().then(templateData => {
       
      });
      
