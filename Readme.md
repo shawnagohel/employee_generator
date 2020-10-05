@@ -11,6 +11,11 @@ SO THAT I have quick access to their emails and GitHub profiles"
 
 https://drive.google.com/file/d/1oWNdFJtDFMDVsxHfGkODuJFCaolFHTJO/view
 
+
+## Screenshot
+
+https://github.com/shawnagohel/employee_generator/blob/main/Screen%20Shot%202020-10-05%20at%204.10.06%20PM.png
+
 ## Installation Instructions
 
 npm install inquirer
